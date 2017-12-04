@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private bool destroy;
     private bool startPressing;
     private bool startChanging = true;
+    private bool changeSize = false;
     //private int keyIndex;
     /*private char[] possibleKeys = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
         'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
@@ -37,6 +38,11 @@ public class Player : MonoBehaviour {
         if (startChanging)
         {
             StartCoroutine(ChangeSizeAndBrightness());
+        }
+
+        if (changeSize)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * 1.5f, Time.deltaTime);
         }
 
         if (startPressing)
@@ -73,9 +79,10 @@ public class Player : MonoBehaviour {
         startChanging = false;
         yield return new WaitForSeconds(Random.Range(10, 20));
         startPressing = true;
+        changeSize = true;
         color.a = 1.0f;
         sr.color = color;
-        transform.localScale = transform.localScale * 1.5f;
+        //transform.localScale = transform.localScale * 1.5f;
         StartCoroutine(DestroyPlayer());
     }
 

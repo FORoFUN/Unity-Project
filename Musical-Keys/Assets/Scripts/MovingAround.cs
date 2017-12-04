@@ -10,7 +10,7 @@ public class MovingAround : MonoBehaviour
     public float ymin;
     public float ymax;
     private Vector3 targetposition;
-    private float smoothingTime = 2.0f;
+    private float smoothingTime = 1f;
 
     public bool waiting = false;
     private float moveDelay = 1;
@@ -23,7 +23,7 @@ public class MovingAround : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, targetposition, Time.deltaTime * 1);
+            transform.position = Vector3.Lerp(transform.position, targetposition, Time.deltaTime * smoothingTime);
         }
     }
 
