@@ -19,7 +19,7 @@ public class MovingAround : MonoBehaviour
 
         if (waiting == false)
         {
-            SendMessage("LerpCube");
+            SendMessage("LerpThings");
         }
         else
         {
@@ -28,7 +28,7 @@ public class MovingAround : MonoBehaviour
     }
 
 
-    IEnumerator LerpCube()
+    IEnumerator LerpThings()
     {
         targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
         waiting = true;

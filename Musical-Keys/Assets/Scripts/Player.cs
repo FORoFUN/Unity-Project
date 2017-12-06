@@ -47,29 +47,10 @@ public class Player : MonoBehaviour {
 
         if (startPressing)
         {
-            if (Input.inputString == "a")
+            if (Input.inputString == tm.text.ToLower())
             {
-                if (tm.text == "A")
-                {
-                    ps.Play();
-                    gameObject.SetActive(false);
-                }
-            }
-            if (Input.inputString == "b")
-            {
-                if (tm.text == "B")
-                {
-                    ps.Play();
-                    gameObject.SetActive(false);
-                }
-            }
-            if (Input.inputString == "c")
-            {
-                if (tm.text == "C")
-                {
-                    ps.Play();
-                    gameObject.SetActive(false);
-                }
+                ps.Play();
+                gameObject.SetActive(false);
             }
         }
 	}

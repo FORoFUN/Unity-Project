@@ -6,17 +6,18 @@ public class RandomObject : MonoBehaviour
     private Color color;
     private SpriteRenderer sr;
     public TextMesh tm;
-    //public GameManager gm;
-    //public ParticleSystem ps;
+    private Camera cam;
     public Sprite[] spriteList;
     private int spriteIndex;
     private bool destroy;
     private bool startPressing;
     private bool startChanging;
+    private bool changeSize = false;
     private int keyIndex;
-    private char[] possibleKeys = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-        'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-        'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+    private string[] possibleKeys = {"q w e", "w e r", "e r t", "r t y", "t y u", "y u i", "u i o", "i o p"
+            , "a s d", "s d f", "d f g", "f g h", "g h j", "h j k", "j k l"
+            , "z x c", "x c v", "c v b", "v b n", "b n m"};
+    private string[] assignedKeys;
 
     // Use this for initialization
     void Start()
@@ -24,13 +25,19 @@ public class RandomObject : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         color = new Color(Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 150.0f / 255.0f);
         sr.color = color;
+
         destroy = true;
         startPressing = false;
         startChanging = true;
+
         spriteIndex = Random.Range(0, spriteList.Length - 1);
         sr.sprite = spriteList[spriteIndex];
+
         keyIndex = Random.Range(0, possibleKeys.Length - 1);
-        tm.text = possibleKeys[keyIndex].ToString();
+        assignedKeys = possibleKeys[keyIndex].Split();
+        tm.text = assignedKeys[Random.Range(0, 2)].ToUpper();
+
+        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -40,11 +47,15 @@ public class RandomObject : MonoBehaviour
         {
             StartCoroutine(ChangeSizeAndBrightness());
         }
+        if (changeSize)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * 1.5f, Time.deltaTime);
+        }
         if (startPressing)
         {
-            if (Input.inputString == possibleKeys[keyIndex].ToString().ToLower())
+            if (Input.inputString == tm.text.ToLower())
             {
-                //ps.Play();
+                cam.GetComponent<CameraShake>().Shake();
                 gameObject.SetActive(false);
             }
         }
@@ -55,8 +66,11 @@ public class RandomObject : MonoBehaviour
         startChanging = false;
         yield return new WaitForSeconds(2.5f);
         startPressing = true;
+        changeSize = true;
+
         color.a = 1.0f;
         sr.color = color;
+
         transform.localScale = transform.localScale * 1.5f;
         StartCoroutine(DestroyPlayer());
     }
@@ -67,7 +81,7 @@ public class RandomObject : MonoBehaviour
         if (destroy)
         {
             //gm.currentNumSpawn--;
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
