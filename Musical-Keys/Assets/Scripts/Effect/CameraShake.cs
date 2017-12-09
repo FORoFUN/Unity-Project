@@ -16,7 +16,6 @@ public class CameraShake : MonoBehaviour {
 
         // Stat at THIS camera's position (transform.position)
         originalPosition = transform.position;
-
 	}
 	
 	// Update is called once per frame
@@ -30,7 +29,7 @@ public class CameraShake : MonoBehaviour {
         if (shakeTimer > 0)
         {
             // Random.value returns a float between 0 and 1
-            // Random.insideUintSphere adds a vector 
+            // Random.insideUintSphere adds a vector
             transform.position = transform.position + (Random.insideUnitSphere * shakeAmt);
             shakeTimer -= Time.deltaTime;
         }

@@ -14,16 +14,13 @@ public class RandomObject : MonoBehaviour
     private bool startChanging;
     private bool changeSize = false;
     private int keyIndex;
-    private string[] possibleKeys = {"q w e", "w e r", "e r t", "r t y", "t y u", "y u i", "u i o", "i o p"
-            , "a s d", "s d f", "d f g", "f g h", "g h j", "h j k", "j k l"
-            , "z x c", "x c v", "c v b", "v b n", "b n m"};
-    private string[] assignedKeys;
+    private string[] possibleKeys = {"q", "w", "e", "r", "t", "a", "d", "g", "j", "l", "z", "x", "v", "m"};
 
     // Use this for initialization
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        color = new Color(Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 150.0f / 255.0f);
+        color = new Color(Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 50.0f / 255.0f);
         sr.color = color;
 
         destroy = true;
@@ -34,8 +31,7 @@ public class RandomObject : MonoBehaviour
         sr.sprite = spriteList[spriteIndex];
 
         keyIndex = Random.Range(0, possibleKeys.Length - 1);
-        assignedKeys = possibleKeys[keyIndex].Split();
-        tm.text = assignedKeys[Random.Range(0, 2)].ToUpper();
+        tm.text = possibleKeys[keyIndex].ToUpper();
 
         cam = Camera.main;
     }
@@ -49,7 +45,8 @@ public class RandomObject : MonoBehaviour
         }
         if (changeSize)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * 1.5f, Time.deltaTime);
+            //transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * 1.5f, Time.deltaTime);
+            //LeanTween.scale(gameObject, transform.localScale * 1.5f, 1f).setEase(LeanTweenType.easeOutBounce);
         }
         if (startPressing)
         {
@@ -69,15 +66,16 @@ public class RandomObject : MonoBehaviour
         changeSize = true;
 
         color.a = 1.0f;
-        sr.color = color;
+        //sr.color = color;
+        LeanTween.color(gameObject, color, 1f);
 
-        transform.localScale = transform.localScale * 1.5f;
-        StartCoroutine(DestroyPlayer());
+        //transform.localScale = transform.localScale * 1.5f;
+        //StartCoroutine(DestroyPlayer());
     }
 
     IEnumerator DestroyPlayer()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
         if (destroy)
         {
             //gm.currentNumSpawn--;

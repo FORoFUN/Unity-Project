@@ -10,30 +10,37 @@ public class MovingAround : MonoBehaviour
     public float ymin;
     public float ymax;
     private Vector3 targetposition;
-    private float smoothingTime = 1f;
 
-    public bool waiting = false;
-    private float moveDelay = 1;
+    private float movingTime = 1.0f;
+    private int waiting;
+    private float moveDelay = 1.0f;
+
+    private void Start()
+    {
+        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
+        waiting = 2;
+    }
+
     void FixedUpdate()
     {
 
-        if (waiting == false)
+        if (waiting == 0)
         {
-            SendMessage("LerpThings");
+            StartCoroutine(SetNewPosition());
         }
-        else
+        else if(waiting == 2)
         {
-            transform.position = Vector3.Lerp(transform.position, targetposition, Time.deltaTime * smoothingTime);
+            LeanTween.move(gameObject, targetposition, movingTime);
+            waiting = 0;
         }
     }
 
 
-    IEnumerator LerpThings()
+    IEnumerator SetNewPosition()
     {
-        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
-        waiting = true;
+        waiting = 1;
         yield return new WaitForSeconds(moveDelay);
-        waiting = false;
-        //Debug.Log ("waited");
+        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
+        waiting = 2;
     }
 }
