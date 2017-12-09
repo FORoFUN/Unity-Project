@@ -247,7 +247,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1208915891
+  randomSeed: 49553245
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -337,7 +337,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9411765, g: 0.73833674, b: 0.076124586, a: 1}
+      maxColor: {r: 0, g: 0.13103485, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -3592,7 +3592,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2a1cc889a4af7864e8b2534643d37a91, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c306e48b95e07954ab3ad1a475fdfa01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
