@@ -28,7 +28,7 @@ public class SceneController : MonoBehaviour {
         // Cheat Load Main Menu
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            SceneManager.LoadScene("Master");
+            SceneManager.LoadScene("Main Menu");
         }
 
         // load next scene
