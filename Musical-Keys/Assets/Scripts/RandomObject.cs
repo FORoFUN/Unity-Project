@@ -16,7 +16,14 @@ public class RandomObject : MonoBehaviour
     private int keyIndex;
     private string[] possibleKeys = {"q", "w", "e", "r", "t", "a", "d", "g", "j", "l", "z", "x", "v", "m"};
 
+    private GameManager gm;
+
     // Use this for initialization
+    private void Awake()
+    {
+        gm = GameManager.Instance;
+    }
+
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -53,7 +60,8 @@ public class RandomObject : MonoBehaviour
             if (Input.inputString == tm.text.ToLower())
             {
                 cam.GetComponent<CameraShake>().Shake();
-                gameObject.SetActive(false);
+                gm.currentNumSpawn--;
+                Destroy(gameObject);
             }
         }
     }
@@ -66,10 +74,8 @@ public class RandomObject : MonoBehaviour
         changeSize = true;
 
         color.a = 1.0f;
-        //sr.color = color;
         LeanTween.color(gameObject, color, 1f);
 
-        //transform.localScale = transform.localScale * 1.5f;
         //StartCoroutine(DestroyPlayer());
     }
 
