@@ -5,77 +5,113 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     private Color color;
-    private SpriteRenderer sr;
+    private ParticleSystem ps;
+
+    public GameObject slash;
     public TextMesh tm;
-    public ParticleSystem ps;
-    //public Sprite[] spriteList;
-    //private int spriteIndex;
-    private bool destroy;
+    public GameObject spriteObject;
+
     private bool startPressing;
-    private bool startChanging = true;
-    private bool changeSize = false;
-    //private char[] player_key = ['H', 'B', 'C', 'N', 'O', 'F', 'P', 'S', 'K', 'V', 'I', 'Y', 'U']
-    //private int keyIndex;
-    /*private char[] possibleKeys = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-        'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-        'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };*/
+    private bool changeSize;
+
+    public bool right;
+    public bool wrong;
+
+    private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user pressed the wrong key
+
+    private string[] playerKeys = { "H", "B", "C", "N", "O", "F", "P", "S", "K", "V", "I", "Y", "U" };
+    private int keyIndex;
+
+    private GameManager gm;
 
     // Use this for initialization
     void Start () {
-        sr = GetComponent<SpriteRenderer>();
-        //color = new Color(Random.Range(0, 255)/255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 150.0f/255.0f);
-        //sr.color = color;
-        color = sr.color;
-        destroy = true;
+        ps = GetComponent<ParticleSystem>();
+
+        color = new Color(1.0f, 1.0f, 1.0f, 150.0f/255.0f);
+        spriteObject.GetComponent<SpriteRenderer>().color = color;
+
         startPressing = false;
-        //spriteIndex = Random.Range(0, spriteList.Length-1);
-        //sr.sprite = spriteList[spriteIndex];
-        //keyIndex = Random.Range(0, possibleKeys.Length-1);
-        //tm.text = possibleKeys[keyIndex].ToString();
+        changeSize = false;
+        right = false;
+        wrong = false;
+
+        keyPressed = 0;
+
+        keyIndex = Random.Range(0, playerKeys.Length-1);
+        tm.text = playerKeys[keyIndex];
+
+        StartCoroutine(ChangeSizeAndBrightness());
+
+        gm = GameManager.Instance;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (startChanging)
+
+        if(keyPressed == 2)
         {
-            StartCoroutine(ChangeSizeAndBrightness());
+            slash.SetActive(true);
+        }
+
+        if(keyPressed != 0)
+        {
+            StartCoroutine(DestroyPlayer());
+            keyPressed = 0;
         }
 
         if (changeSize)
         {
-            //transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * 1.5f, Time.deltaTime);
-            LeanTween.scale(gameObject, transform.localScale * 2.0f, 1f).setEase(LeanTweenType.easeOutBounce);
+            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 2.0f, 1f).setEase(LeanTweenType.easeOutBounce);
             changeSize = false;
         }
 
         if (startPressing)
         {
-            if (Input.inputString == tm.text.ToLower())
+            if (Input.anyKeyDown)
             {
-                ps.Play();
-                gameObject.SetActive(false);
+                if (Input.inputString == tm.text.ToLower())
+                {
+                    ps.Play();
+                    keyPressed = 1;
+                    right = true;
+                    spriteObject.SetActive(false);
+                }
+
+                else
+                {
+                    wrong = true;
+                    gm.Players.Remove(gameObject);
+                    keyPressed = 2;
+                }
             }
         }
 	}
 
     IEnumerator ChangeSizeAndBrightness()
     {
-        startChanging = false;
-        yield return new WaitForSeconds(Random.Range(15, 30));
+        yield return new WaitForSeconds(5);
+        //yield return new WaitForSeconds(Random.Range(30, 50));
         startPressing = true;
         changeSize = true;
+
         color.a = 1.0f;
-        //sr.color = color;
-        LeanTween.color(gameObject, color, 1f);
-        StartCoroutine(DestroyPlayer());
+        LeanTween.color(spriteObject, color, 1f);
+
+        yield return new WaitForSeconds(2.0f);
+        if(keyPressed == 0)
+        {
+            wrong = true;
+            gm.Players.Remove(gameObject);
+            keyPressed = 2;
+        }
     }
 
     IEnumerator DestroyPlayer()
     {
-        yield return new WaitForSeconds(2.0f);
-        if (destroy)
-        {
-            gameObject.SetActive(false);
-        }
+        yield return new WaitForSeconds(1.0f);
+        gm.numberPlayerInactive++;
+        slash.SetActive(false);
+        spriteObject.SetActive(false);
     }
 }
