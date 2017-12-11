@@ -220,6 +220,7 @@ MonoBehaviour:
   xmax: 8
   ymin: -4
   ymax: 4
+  movingTime: 2
 --- !u!198 &198258641908173086
 ParticleSystem:
   m_ObjectHideFlags: 1

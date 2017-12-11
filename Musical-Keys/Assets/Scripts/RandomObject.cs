@@ -14,7 +14,7 @@ public class RandomObject : MonoBehaviour
     private bool startChanging;
     private bool changeSize = false;
     private int keyIndex;
-    private string[] possibleKeys = {"q", "w", "e", "r", "t", "a", "d", "g", "j", "l", "z", "x", "v", "m"};
+    private string[] possibleKeys = {"q", "w", "e", "r", "t", "a", "d", "g", "j", "l", "z", "x", "m"};
 
     private GameManager gm;
 
@@ -27,7 +27,7 @@ public class RandomObject : MonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        color = new Color(Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 50.0f / 255.0f);
+        color = new Color(Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, Random.Range(0, 255) / 255.0f, 255.0f / 255.0f);
         sr.color = color;
 
         destroy = true;
@@ -73,8 +73,8 @@ public class RandomObject : MonoBehaviour
         startPressing = true;
         changeSize = true;
 
-        color.a = 1.0f;
-        LeanTween.color(gameObject, color, 1f);
+        //color.a = 1.0f;
+        //LeanTween.color(gameObject, color, 1f);
 
         //StartCoroutine(DestroyPlayer());
     }

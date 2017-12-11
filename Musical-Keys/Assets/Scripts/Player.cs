@@ -54,7 +54,7 @@ public class Player : MonoBehaviour {
         //Changing size to notice player to press key
         if (changeSize)
         {
-            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 1.5f, 1f).setEase(LeanTweenType.easeOutBounce);
+            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 1.5f, 0.5f).setEase(LeanTweenType.easeOutBounce);
             changeSize = false;
         }
 
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour {
         //After a random time between 30 to 50 seconds after the player spawn the user will have to press the key
 
         //yield return new WaitForSeconds(5);
-        yield return new WaitForSeconds(Random.Range(30, 50));
+        yield return new WaitForSeconds(Random.Range(10, 20));
         startPressing = true;
         changeSize = true;
 

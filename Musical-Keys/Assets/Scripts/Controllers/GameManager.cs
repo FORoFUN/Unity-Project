@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public int numberPlayerInactive = 0;
     public int currentRound = 1;
     private int roundMusic = 0;
+    private bool roundTransition = false;
+    private bool generatingObstacles = true;
 
     private Vector3 spawnPoint;
 
@@ -120,6 +122,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (roundTransition)
+        {
+            StartCoroutine(NextRound());
+            roundTransition = false;
+        }
+
         //When a new round start, create the players on screen and assign an unique key to them from the list of possible keys
         if (startNewRound)
         {
@@ -164,7 +172,7 @@ public class GameManager : MonoBehaviour
         if(Players.Count > 0 && numberPlayerInactive == currentPlayers.Count && currentRound < 3)
         {
             numberPlayerInactive = 0;
-            StartCoroutine(NextRound());
+            StartCoroutine(GoToRoundTransition());
         }
 
         //If all players are either right or wrong and the current round is 3
@@ -182,51 +190,59 @@ public class GameManager : MonoBehaviour
             currentRound = 4;
             StartCoroutine(GoToEndGame());
         }
+
+        if(SceneManager.GetActiveScene().name == "Main Menu")
+        {
+            Destroy(gameObject);
+        }
     }
 
     //Spawn obstacles according to the beat of the music
     void FixedUpdate()
     {
-        if (currentRound == 1)
+        if (generatingObstacles)
         {
-            if (audio_source.time >= Single.Parse(arrayOfBeat1[beatIndex]))
+            if (currentRound == 1)
             {
-                if (currentNumSpawn < maxSpawn)
+                if (audio_source.time >= Single.Parse(arrayOfBeat1[beatIndex]))
                 {
-                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
-                    currentNumSpawn++;
-                    beatIndex += 2;
+                    if (currentNumSpawn < maxSpawn)
+                    {
+                        Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                        currentNumSpawn++;
+                        beatIndex += 1;
+                    }
                 }
+
             }
 
-        }
-
-        else if (currentRound == 2)
-        {
-            if (audio_source.time >= Single.Parse(arrayOfBeat2[beatIndex]))
+            else if (currentRound == 2)
             {
-                if (currentNumSpawn < maxSpawn)
+                if (audio_source.time >= Single.Parse(arrayOfBeat2[beatIndex]))
                 {
-                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
-                    currentNumSpawn++;
-                    beatIndex += 2;
+                    if (currentNumSpawn < maxSpawn)
+                    {
+                        Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                        currentNumSpawn++;
+                        beatIndex += 1;
+                    }
                 }
+
             }
 
-        }
-
-        else if (currentRound == 3)
-        {
-            if (audio_source.time >= Single.Parse(arrayOfBeat3[beatIndex]))
+            else if (currentRound == 3)
             {
-                if (currentNumSpawn < maxSpawn)
+                if (audio_source.time >= Single.Parse(arrayOfBeat3[beatIndex]))
                 {
-                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
-                    currentNumSpawn++;
-                    beatIndex += 2;
+                    if (currentNumSpawn < maxSpawn)
+                    {
+                        Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                        currentNumSpawn++;
+                        beatIndex += 1;
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -234,28 +250,53 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene("Game Over");
+        foreach (GameObject player in Players)
+        {
+            player.GetComponent<MovingAround>().movingTime = 2.0f;
+        }
+
+        ObjectToSpawn.GetComponent<MovingAround>().movingTime = 2.0f;
         currentPlayers = new List<GameObject>();
         keyIndexes = new List<int>();
         audio_source.Stop();
+        Destroy(gameObject);
+    }
+
+    IEnumerator GoToRoundTransition()
+    {
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene("Round Transition");
+        //currentPlayers = new List<GameObject>();
+        keyIndexes = new List<int>();
+        generatingObstacles = false;
+        roundTransition = true;
     }
 
     IEnumerator NextRound()
     {
-        yield return new WaitForSeconds(2.0f);
-        int index = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(index);
+        yield return new WaitForSeconds(5.0f);
+        currentRound++;
+        //int index = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(currentRound);
 
         //Reset variables and increase current round #
         startNewRound = true;
+        generatingObstacles = true;
         beatIndex = 0;
         currentNumSpawn = 0;
-        currentRound++;
         roundMusic++;
-
-        currentPlayers = new List<GameObject>();
-        keyIndexes = new List<int>();
 
         audio_source.clip = musics[roundMusic];
         audio_source.Play();
+
+        currentPlayers = new List<GameObject>();
+
+        //Increase movement speed
+        foreach (GameObject player in Players)
+        {
+            player.GetComponent<MovingAround>().movingTime -= 0.5f;
+        }
+
+        ObjectToSpawn.GetComponent<MovingAround>().movingTime -= 0.5f;
     }
 }

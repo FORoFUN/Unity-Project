@@ -11,9 +11,8 @@ public class MovingAround : MonoBehaviour
     public float ymax;
     private Vector3 targetposition;
 
-    private float movingTime = 1.0f;
+    public float movingTime = 2.0f;
     private int waiting;
-    private float moveDelay = 1.0f;
 
     private void Start()
     {
@@ -39,7 +38,7 @@ public class MovingAround : MonoBehaviour
     IEnumerator SetNewPosition()
     {
         waiting = 1;
-        yield return new WaitForSeconds(moveDelay);
+        yield return new WaitForSeconds(movingTime);
         targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
         waiting = 2;
     }

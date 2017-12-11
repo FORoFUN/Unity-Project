@@ -12,17 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/MainGamePlayScene1.unity
     guid: 88136cd011947e749ae575606a382577
   - enabled: 1
-    path: Assets/Scenes/Round Transition.unity
-    guid: 2b59485c9f96a1b45befc99521303f7d
-  - enabled: 1
     path: Assets/Scenes/MainGamePlayScene2.unity
     guid: 588abb0c26dc11e44bd1920baa5736a0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainGamePlayScene3.unity
     guid: fdf87f47803bbe74ea49ee51f191032e
   - enabled: 1
     path: Assets/Scenes/Game Over.unity
     guid: a3f1a8c80fb6b7840b1434b3e8642e9f
+  - enabled: 1
+    path: Assets/Scenes/Round Transition.unity
+    guid: 2b59485c9f96a1b45befc99521303f7d
   - enabled: 1
     path: Assets/PauseMenu/PauseMenu.unity
     guid: 24b4ec112a32fef4b8fa1600e320d7b4
