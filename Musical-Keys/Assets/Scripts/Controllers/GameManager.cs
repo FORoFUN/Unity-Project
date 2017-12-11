@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Variables
     public List<GameObject> Players;
+    public List<GameObject> currentPlayers;
     public GameObject ObjectToSpawn;
     public AudioClip[] musics;
 
@@ -17,9 +19,9 @@ public class GameManager : MonoBehaviour
     public int numberPlayerInactive = 0;
     public int currentRound = 1;
     private int roundMusic = 0;
+
     private Vector3 spawnPoint;
 
-    private Player[] playerScripts;
     private AudioSource audio_source;
 
     private int beatIndex;
@@ -34,6 +36,11 @@ public class GameManager : MonoBehaviour
     private string path2 = "Assets/Music/2.txt";
     private string path3 = "Assets/Music/3.txt";
 
+    public List<int> keyIndexes;
+
+    private string[] playerKeys = { "H", "B", "C", "N", "O", "F", "P", "S", "K", "V", "I", "Y", "U" };
+
+    //Creating a singleton of Game Manager
     private static GameManager _instance;
 
     public static GameManager Instance {
@@ -42,6 +49,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //The Game Manager will not be destroy between scenes
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -99,6 +107,7 @@ public class GameManager : MonoBehaviour
 
         reader.Close();
 
+        //Initialize some variables
         beatIndex = 0;
 
         audio_source = GetComponent<AudioSource>();
@@ -111,30 +120,71 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //When a new round start, create the players on screen and assign an unique key to them from the list of possible keys
         if (startNewRound)
         {
-            foreach(GameObject player in Players)
+            foreach (GameObject player in Players)
             {
-                Instantiate(player, spawnPoint, Quaternion.identity);
+                GameObject clone = Instantiate(player, spawnPoint, Quaternion.identity);
+
+                //This will ensure each has an unique key
+                int randomNumber = UnityEngine.Random.Range(0, playerKeys.Length - 1);
+                while (keyIndexes.Contains(randomNumber)) {
+                    randomNumber = UnityEngine.Random.Range(0, playerKeys.Length - 1);
+                }
+                keyIndexes.Add(randomNumber);
+
+                //Assign the key from the list of key indexes to the player
+                clone.GetComponent<Player>().tm.text = playerKeys[keyIndexes[keyIndexes.Count - 1]];
+
+                //Add those to current players list
+                currentPlayers.Add(clone);
             }
             startNewRound = false;
         }
 
-        /*foreach(GameObject player in Players)
+        //Look for players who did not press the right key on time and remove them from the game
+        //Compare tag of the prefabs to the actual object in the scene to remove properly
+        foreach (GameObject curPlayer in currentPlayers)
         {
-            if (player.GetComponent<Player>().wrong)
+            if (curPlayer.GetComponent<Player>().wrong)
             {
-                Players.Remove(player);
+                foreach (GameObject player in Players)
+                {
+                    if (player.tag == curPlayer.tag)
+                    {
+                        Players.Remove(player);
+                    }
+                }
             }
-        }*/
+        }
 
-        if(numberPlayerInactive == Players.Count && currentRound < 3)
+        //If there are player in the scene and all players are either right or wrong and the current round is less than 3
+        //then go to the next round and reset variables
+        if(Players.Count > 0 && numberPlayerInactive == currentPlayers.Count && currentRound < 3)
         {
             numberPlayerInactive = 0;
             StartCoroutine(NextRound());
         }
+
+        //If all players are either right or wrong and the current round is 3
+        //then move to game over scene and reset variables
+        if (numberPlayerInactive == currentPlayers.Count && currentRound == 3)
+        {
+            currentRound++;
+            StartCoroutine(GoToEndGame());
+        }
+
+        //If all players are out and the current round is less than 3
+        //then move to game over scene and reset variables
+        if(Players.Count == 0 && currentRound < 3)  
+        {
+            currentRound = 4;
+            StartCoroutine(GoToEndGame());
+        }
     }
 
+    //Spawn obstacles according to the beat of the music
     void FixedUpdate()
     {
         if (currentRound == 1)
@@ -143,7 +193,7 @@ public class GameManager : MonoBehaviour
             {
                 if (currentNumSpawn < maxSpawn)
                 {
-                    GameObject clone = Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                     currentNumSpawn++;
                     beatIndex += 2;
                 }
@@ -157,7 +207,7 @@ public class GameManager : MonoBehaviour
             {
                 if (currentNumSpawn < maxSpawn)
                 {
-                    GameObject clone = Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                     currentNumSpawn++;
                     beatIndex += 2;
                 }
@@ -171,7 +221,7 @@ public class GameManager : MonoBehaviour
             {
                 if (currentNumSpawn < maxSpawn)
                 {
-                    GameObject clone = Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
+                    Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                     currentNumSpawn++;
                     beatIndex += 2;
                 }
@@ -180,16 +230,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    IEnumerator GoToEndGame()
+    {
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene("Game Over");
+        currentPlayers = new List<GameObject>();
+        keyIndexes = new List<int>();
+        audio_source.Stop();
+    }
+
     IEnumerator NextRound()
     {
         yield return new WaitForSeconds(2.0f);
         int index = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(index);
+
+        //Reset variables and increase current round #
         startNewRound = true;
         beatIndex = 0;
         currentNumSpawn = 0;
         currentRound++;
         roundMusic++;
+
+        currentPlayers = new List<GameObject>();
+        keyIndexes = new List<int>();
+
         audio_source.clip = musics[roundMusic];
         audio_source.Play();
     }

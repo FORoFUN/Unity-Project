@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    //Variables
     private Color color;
     private ParticleSystem ps;
 
@@ -17,15 +18,13 @@ public class Player : MonoBehaviour {
     public bool right;
     public bool wrong;
 
-    private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user pressed the wrong key
-
-    private string[] playerKeys = { "H", "B", "C", "N", "O", "F", "P", "S", "K", "V", "I", "Y", "U" };
-    private int keyIndex;
+    private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user has not pressed the right key in the given time
 
     private GameManager gm;
 
     // Use this for initialization
     void Start () {
+        //Initialize variables
         ps = GetComponent<ParticleSystem>();
 
         color = new Color(1.0f, 1.0f, 1.0f, 150.0f/255.0f);
@@ -38,9 +37,6 @@ public class Player : MonoBehaviour {
 
         keyPressed = 0;
 
-        keyIndex = Random.Range(0, playerKeys.Length-1);
-        tm.text = playerKeys[keyIndex];
-
         StartCoroutine(ChangeSizeAndBrightness());
 
         gm = GameManager.Instance;
@@ -49,23 +45,20 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //If user did not press the right key in time put a red slash on the sprite
         if(keyPressed == 2)
         {
             slash.SetActive(true);
         }
 
-        if(keyPressed != 0)
-        {
-            StartCoroutine(DestroyPlayer());
-            keyPressed = 0;
-        }
-
+        //Changing size to notice player to press key
         if (changeSize)
         {
-            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 2.0f, 1f).setEase(LeanTweenType.easeOutBounce);
+            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 1.5f, 1f).setEase(LeanTweenType.easeOutBounce);
             changeSize = false;
         }
 
+        //If player press the right key no slash will appear and some particles will appear and call the SetInactive function
         if (startPressing)
         {
             if (Input.anyKeyDown)
@@ -75,14 +68,9 @@ public class Player : MonoBehaviour {
                     ps.Play();
                     keyPressed = 1;
                     right = true;
+                    startPressing = false;
                     spriteObject.SetActive(false);
-                }
-
-                else
-                {
-                    wrong = true;
-                    gm.Players.Remove(gameObject);
-                    keyPressed = 2;
+                    StartCoroutine(SetInactive());
                 }
             }
         }
@@ -90,26 +78,33 @@ public class Player : MonoBehaviour {
 
     IEnumerator ChangeSizeAndBrightness()
     {
-        yield return new WaitForSeconds(5);
-        //yield return new WaitForSeconds(Random.Range(30, 50));
+        //After a random time between 30 to 50 seconds after the player spawn the user will have to press the key
+
+        //yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(Random.Range(30, 50));
         startPressing = true;
         changeSize = true;
 
         color.a = 1.0f;
         LeanTween.color(spriteObject, color, 1f);
 
+        //If key not pressed after 2 seconds then put slash on sprite and call SetInactive
         yield return new WaitForSeconds(2.0f);
+
         if(keyPressed == 0)
         {
             wrong = true;
-            gm.Players.Remove(gameObject);
+            startPressing = false;
             keyPressed = 2;
+            StartCoroutine(SetInactive());
         }
     }
 
-    IEnumerator DestroyPlayer()
+    IEnumerator SetInactive()
     {
-        yield return new WaitForSeconds(1.0f);
+        //Increase the inactive player # in GM and remove player from the scene
+        yield return new WaitForSeconds(2.0f);
+        keyPressed = 0;
         gm.numberPlayerInactive++;
         slash.SetActive(false);
         spriteObject.SetActive(false);

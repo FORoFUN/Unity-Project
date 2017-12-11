@@ -223,7 +223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &996607732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +657,7 @@ MonoBehaviour:
   - {fileID: 1623413866870400, guid: eef76d1a085376349ab7a7d7c1b466eb, type: 2}
   - {fileID: 1113955440843114, guid: d35a8c94bff64f44bb05db9a8418f25e, type: 2}
   - {fileID: 1981607888193074, guid: dad9fb74107af6740ad01cd77ef46841, type: 2}
+  currentPlayers: []
   ObjectToSpawn: {fileID: 1379559495538210, guid: 14d0db9596000a74ba3314741f4ac792,
     type: 2}
   musics:
@@ -665,6 +666,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 125e0adef9c00b34e93c747c44054038, type: 3}
   currentNumSpawn: 0
   numberPlayerInactive: 0
+  currentRound: 1
+  keyIndexes: 
 --- !u!82 &1383387158
 AudioSource:
   m_ObjectHideFlags: 0
