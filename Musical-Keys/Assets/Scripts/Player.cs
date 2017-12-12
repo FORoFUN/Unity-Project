@@ -6,17 +6,24 @@ public class Player : MonoBehaviour {
 
     //Variables
     private Color color;
+    private Color wrongColor;
     private ParticleSystem ps;
 
-    public GameObject slash;
     public TextMesh tm;
     public GameObject spriteObject;
+    public RectTransform bar;
+    public RectTransform canvas;
 
-    private bool startPressing;
+    public bool startPressing;
     private bool changeSize;
+    private bool startMissTimer;
+    private bool pressedRightKey;
 
-    public bool right;
-    public bool wrong;
+    private Vector3 originalSize;
+
+    public int hp;
+
+    public bool dead;
 
     private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user has not pressed the right key in the given time
 
@@ -28,12 +35,18 @@ public class Player : MonoBehaviour {
         ps = GetComponent<ParticleSystem>();
 
         color = new Color(1.0f, 1.0f, 1.0f, 150.0f/255.0f);
+        wrongColor = new Color(1.0f, 0.0f, 0.0f, 150.0f/255.0f);
         spriteObject.GetComponent<SpriteRenderer>().color = color;
 
         startPressing = false;
         changeSize = false;
-        right = false;
-        wrong = false;
+        startMissTimer = false;
+        pressedRightKey = false;
+
+        originalSize = spriteObject.transform.localScale;
+        hp = 3;
+
+        dead = false;
 
         keyPressed = 0;
 
@@ -41,72 +54,139 @@ public class Player : MonoBehaviour {
 
         gm = GameManager.Instance;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        //If user did not press the right key in time put a red slash on the sprite
-        if(keyPressed == 2)
+    // Update is called once per frame
+    void Update() {
+
+        //Change HP bar based on size
+        if (hp == 3)
         {
-            slash.SetActive(true);
+            bar.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+        }
+
+        else if (hp == 2)
+        {
+            bar.localScale = new Vector3 (0.6f, 1.0f, 1.0f);
+        }
+
+        else if (hp == 1)
+        {
+            bar.localScale = new Vector3 (0.3f, 1.0f, 1.0f);
+        }
+
+        else if (hp == 0)
+        {
+            bar.localScale = new Vector3 (0.0f, 1.0f, 1.0f);
+            if (!dead)
+            {
+                StartCoroutine(SetInactive());
+            }
         }
 
         //Changing size to notice player to press key
         if (changeSize)
         {
-            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 1.5f, 0.5f).setEase(LeanTweenType.easeOutBounce);
+            LeanTween.scale(spriteObject, spriteObject.transform.localScale * 1.7f, 0.25f).setEase(LeanTweenType.easeOutBounce);
+            LeanTween.moveLocalY(canvas.gameObject, -1.2f, 0.25f).setEase(LeanTweenType.easeOutBounce);
             changeSize = false;
         }
 
         //If player press the right key no slash will appear and some particles will appear and call the SetInactive function
         if (startPressing)
         {
+            if (!startMissTimer)
+            {
+                StartCoroutine(SetMiss());
+                startMissTimer = true;
+            }
+
             if (Input.anyKeyDown)
             {
                 if (Input.inputString == tm.text.ToLower())
                 {
                     ps.Play();
-                    keyPressed = 1;
-                    right = true;
+                    LeanTween.scale(spriteObject, originalSize, 0.25f);
+
+                    LeanTween.moveLocalY(canvas.gameObject, -0.75f, 0.25f).setEase(LeanTweenType.easeOutBounce);
+
+                    color.a = 150.0f / 255.0f;
+                    LeanTween.color(spriteObject, color, 0.25f);
+
                     startPressing = false;
-                    spriteObject.SetActive(false);
-                    StartCoroutine(SetInactive());
+                    pressedRightKey = true;
+                }
+            }
+        }
+
+        else
+        {
+            if (Input.anyKeyDown)
+            {
+                if (Input.inputString == tm.text.ToLower())
+                {
+                    Input.ResetInputAxes();
+                    StartCoroutine(MarkWrong());
+                    if (hp > 0)
+                    {
+                        hp--;
+                    }
                 }
             }
         }
 	}
 
+    IEnumerator MarkWrong()
+    {
+        LeanTween.color(spriteObject, wrongColor, 0.25f);
+        yield return new WaitForSeconds(0.25f);
+        LeanTween.color(spriteObject, color, 0.25f);
+    }
+
     IEnumerator ChangeSizeAndBrightness()
     {
-        //After a random time between 30 to 50 seconds after the player spawn the user will have to press the key
-
-        //yield return new WaitForSeconds(5);
-        yield return new WaitForSeconds(Random.Range(10, 20));
+        //After a random time between 5 to 10 seconds after the player spawn the user will have to press the key
+        yield return new WaitForSeconds(Random.Range(5, 10));
         startPressing = true;
         changeSize = true;
 
         color.a = 1.0f;
-        LeanTween.color(spriteObject, color, 1f);
+        LeanTween.color(spriteObject, color, 0.25f);
+    }
 
-        //If key not pressed after 2 seconds then put slash on sprite and call SetInactive
-        yield return new WaitForSeconds(2.0f);
-
-        if(keyPressed == 0)
+    IEnumerator SetMiss()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (!pressedRightKey)
         {
-            wrong = true;
+            LeanTween.scale(spriteObject, originalSize, 0.25f);
+            LeanTween.moveLocalY(canvas.gameObject, -0.75f, 0.25f).setEase(LeanTweenType.easeOutBounce);
+            color.a = 150.0f / 255.0f;
+            LeanTween.color(spriteObject, color, 0.25f);
+
+            hp--;
+            startMissTimer = false;
             startPressing = false;
-            keyPressed = 2;
-            StartCoroutine(SetInactive());
+        }
+
+        else
+        {
+            pressedRightKey = false;
+            startMissTimer = false;
+        }
+
+        if (hp > 0)
+        {
+            StartCoroutine(ChangeSizeAndBrightness());
         }
     }
 
     IEnumerator SetInactive()
     {
+        dead = true;
         //Increase the inactive player # in GM and remove player from the scene
         yield return new WaitForSeconds(2.0f);
-        keyPressed = 0;
-        gm.numberPlayerInactive++;
-        slash.SetActive(false);
+        //gm.numberPlayerInactive++;
         spriteObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 }

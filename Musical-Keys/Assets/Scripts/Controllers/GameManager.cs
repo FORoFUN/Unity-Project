@@ -13,14 +13,12 @@ public class GameManager : MonoBehaviour
     public GameObject ObjectToSpawn;
     public AudioClip[] musics;
 
-    private int maxSpawn = 30;
+    public int maxSpawn = 25;
     public int currentNumSpawn = 0;
-    private bool startNewRound = true;
-    public int numberPlayerInactive = 0;
-    public int currentRound = 1;
-    private int roundMusic = 0;
-    private bool roundTransition = false;
-    private bool generatingObstacles = true;
+    public bool startNewRound = true;
+    public bool gameOver = false;
+    public int roundMusic;
+    public bool generatingObstacles = true;
 
     private Vector3 spawnPoint;
 
@@ -112,9 +110,13 @@ public class GameManager : MonoBehaviour
         //Initialize some variables
         beatIndex = 0;
 
+        roundMusic = UnityEngine.Random.Range(0, 2);
+
         audio_source = GetComponent<AudioSource>();
 
         audio_source.clip = musics[roundMusic];
+
+        audio_source.Play();
 
         spawnPoint = new Vector3(0.0f, 0.0f, 0.0f);
     }
@@ -122,12 +124,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (roundTransition)
-        {
-            StartCoroutine(NextRound());
-            roundTransition = false;
-        }
-
         //When a new round start, create the players on screen and assign an unique key to them from the list of possible keys
         if (startNewRound)
         {
@@ -155,7 +151,7 @@ public class GameManager : MonoBehaviour
         //Compare tag of the prefabs to the actual object in the scene to remove properly
         foreach (GameObject curPlayer in currentPlayers)
         {
-            if (curPlayer.GetComponent<Player>().wrong)
+            if (curPlayer.GetComponent<Player>().dead)
             {
                 foreach (GameObject player in Players)
                 {
@@ -169,25 +165,9 @@ public class GameManager : MonoBehaviour
 
         //If there are player in the scene and all players are either right or wrong and the current round is less than 3
         //then go to the next round and reset variables
-        if(Players.Count > 0 && numberPlayerInactive == currentPlayers.Count && currentRound < 3)
+        if(Players.Count == 1 && !gameOver)
         {
-            numberPlayerInactive = 0;
-            StartCoroutine(GoToRoundTransition());
-        }
-
-        //If all players are either right or wrong and the current round is 3
-        //then move to game over scene and reset variables
-        if (numberPlayerInactive == currentPlayers.Count && currentRound == 3)
-        {
-            currentRound++;
-            StartCoroutine(GoToEndGame());
-        }
-
-        //If all players are out and the current round is less than 3
-        //then move to game over scene and reset variables
-        if(Players.Count == 0 && currentRound < 3)  
-        {
-            currentRound = 4;
+            gameOver = true;
             StartCoroutine(GoToEndGame());
         }
 
@@ -202,7 +182,7 @@ public class GameManager : MonoBehaviour
     {
         if (generatingObstacles)
         {
-            if (currentRound == 1)
+            if (roundMusic == 0)
             {
                 if (audio_source.time >= Single.Parse(arrayOfBeat1[beatIndex]))
                 {
@@ -210,13 +190,13 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 1;
+                        beatIndex += 2;
                     }
                 }
 
             }
 
-            else if (currentRound == 2)
+            else if (roundMusic == 1)
             {
                 if (audio_source.time >= Single.Parse(arrayOfBeat2[beatIndex]))
                 {
@@ -224,13 +204,13 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 1;
+                        beatIndex += 2;
                     }
                 }
 
             }
 
-            else if (currentRound == 3)
+            else if (roundMusic == 2)
             {
                 if (audio_source.time >= Single.Parse(arrayOfBeat3[beatIndex]))
                 {
@@ -238,7 +218,7 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 1;
+                        beatIndex += 2;
                     }
                 }
 
@@ -250,53 +230,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene("Game Over");
-        foreach (GameObject player in Players)
-        {
-            player.GetComponent<MovingAround>().movingTime = 2.0f;
-        }
-
-        ObjectToSpawn.GetComponent<MovingAround>().movingTime = 2.0f;
         currentPlayers = new List<GameObject>();
         keyIndexes = new List<int>();
         audio_source.Stop();
-        Destroy(gameObject);
-    }
-
-    IEnumerator GoToRoundTransition()
-    {
-        yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadScene("Round Transition");
-        //currentPlayers = new List<GameObject>();
-        keyIndexes = new List<int>();
         generatingObstacles = false;
-        roundTransition = true;
-    }
-
-    IEnumerator NextRound()
-    {
-        yield return new WaitForSeconds(5.0f);
-        currentRound++;
-        //int index = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(currentRound);
-
-        //Reset variables and increase current round #
-        startNewRound = true;
-        generatingObstacles = true;
-        beatIndex = 0;
-        currentNumSpawn = 0;
-        roundMusic++;
-
-        audio_source.clip = musics[roundMusic];
-        audio_source.Play();
-
-        currentPlayers = new List<GameObject>();
-
-        //Increase movement speed
-        foreach (GameObject player in Players)
-        {
-            player.GetComponent<MovingAround>().movingTime -= 0.5f;
-        }
-
-        ObjectToSpawn.GetComponent<MovingAround>().movingTime -= 0.5f;
+        //Destroy(gameObject);
     }
 }

@@ -143,7 +143,7 @@ MonoBehaviour:
   xmax: 8
   ymin: -5
   ymax: 5
-  movingTime: 2
+  speed: 2
 --- !u!114 &114398283402858498
 MonoBehaviour:
   m_ObjectHideFlags: 1
