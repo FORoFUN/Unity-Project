@@ -65,5 +65,12 @@ public class SceneController : MonoBehaviour {
                 SceneManager.LoadScene("Game Over");
             }
         }
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if(Input.anyKeyDown)
+            {
+                SceneManager.LoadScene("Main Menu");
+            }
+        }
 	}
 }
