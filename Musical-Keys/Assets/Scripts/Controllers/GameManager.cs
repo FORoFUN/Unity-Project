@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public GameObject ObjectToSpawn;
     public AudioClip[] musics;
 
+
+    // winner GameObject
+    public GameObject winner = null;
+
     public int maxSpawn = 25;
     public int currentNumSpawn = 0;
     public bool startNewRound = true;
@@ -230,6 +234,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene("Round Transition");
+        // set winner here?
         currentPlayers = new List<GameObject>();
         keyIndexes = new List<int>();
         audio_source.Stop();
