@@ -464,7 +464,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 385038898}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -41.024994, z: 0}
+  m_LocalPosition: {x: 0, y: -16.904999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1737868063}
@@ -476,8 +476,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -41.024998}
-  m_SizeDelta: {x: -400, y: -120.24999}
+  m_AnchoredPosition: {x: 0, y: -16.904997}
+  m_SizeDelta: {x: -400, y: -168.48999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &385038900
 MonoBehaviour:
@@ -1126,7 +1126,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 671303727}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -359.1355, y: 75.7, z: -3.25738}
+  m_LocalPosition: {x: -359.1355, y: 59.7, z: -3.25738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 960507195}
@@ -2194,7 +2194,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1224809531}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -262.8, z: 0}
+  m_LocalPosition: {x: 0, y: -234.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1166447149}
@@ -2203,7 +2203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -262.8}
+  m_AnchoredPosition: {x: 0, y: -234.6}
   m_SizeDelta: {x: 232, y: 43.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1224809533
@@ -2575,7 +2575,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1602489385}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.8999939, z: 0}
+  m_LocalPosition: {x: 0, y: -16.600006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 385038899}
@@ -2583,7 +2583,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1.9}
+  m_AnchoredPosition: {x: 0, y: -16.6}
   m_SizeDelta: {x: 888, y: 438.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1602489387
@@ -2622,8 +2622,7 @@ MonoBehaviour:
     When the game starts, memorize the keyboard button quickly! The keys will\n    disappear,
     and obstacles will block attempt to block your vision.\n\n3. When your flask gets
     larger, press your key! Your time is limited. Fail to press it in\n    time and
-    you will be eliminated.\n\n4. The remaining players will go to the next round.
-    The winner will be the final\n    remaining player!"
+    you will be eliminated.\n\n4. The final remaining player wins the game!"
 --- !u!222 &1602489388
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2906,7 +2905,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1737868062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 264.5, z: 0}
+  m_LocalPosition: {x: 0, y: 248.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 385038899}
@@ -2914,7 +2913,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 264.5}
+  m_AnchoredPosition: {x: 0, y: 248.4}
   m_SizeDelta: {x: 270.7, y: 72.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737868064

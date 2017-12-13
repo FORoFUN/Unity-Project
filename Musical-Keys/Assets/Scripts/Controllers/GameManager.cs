@@ -229,7 +229,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GoToEndGame()
     {
         yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadScene("Game Over");
+        SceneManager.LoadScene("Round Transition");
         currentPlayers = new List<GameObject>();
         keyIndexes = new List<int>();
         audio_source.Stop();
