@@ -106,6 +106,7 @@ public class Player : MonoBehaviour {
             {
                 if (Input.inputString == tm.text.ToLower())
                 {
+                    GetComponent<AudioSource>().Play();
                     ps.Play();
                     LeanTween.scale(spriteObject, originalSize, 0.25f);
 

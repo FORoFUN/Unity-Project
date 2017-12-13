@@ -481,13 +481,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 71a95d1a386acaa4ca1275e52af4f24d, type: 3}
   - {fileID: 8300000, guid: 479196018d8783045af79d240b0f1e31, type: 3}
   - {fileID: 8300000, guid: 125e0adef9c00b34e93c747c44054038, type: 3}
-  winner: {fileID: 0}
   maxSpawn: 25
   currentNumSpawn: 0
   startNewRound: 1
   gameOver: 0
   roundMusic: 0
   generatingObstacles: 1
+  spawnPoint: {x: 0, y: 0, z: 0}
   keyIndexes: 
 --- !u!82 &1383387158
 AudioSource:

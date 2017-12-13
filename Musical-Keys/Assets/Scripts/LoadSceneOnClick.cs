@@ -9,7 +9,7 @@ public class LoadSceneOnClick : MonoBehaviour {
     public void LoadByIndex(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
-        if (sceneIndex == 1)
+        if (sceneIndex == 2)
         {
             Destroy(GameManager.Instance);
         }

@@ -206,7 +206,14 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 2;
+                        if(currentNumSpawn < 5)
+                        {
+                            beatIndex++;
+                        }
+                        else
+                        {
+                            beatIndex += 2;
+                        }
                     }
                 }
 
@@ -220,7 +227,14 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 2;
+                        if (currentNumSpawn < 5)
+                        {
+                            beatIndex++;
+                        }
+                        else
+                        {
+                            beatIndex += 2;
+                        }
                     }
                 }
 
@@ -234,7 +248,14 @@ public class GameManager : MonoBehaviour
                     {
                         Instantiate(ObjectToSpawn, new Vector3(0.0f, 0.0f), Quaternion.identity);
                         currentNumSpawn++;
-                        beatIndex += 2;
+                        if (currentNumSpawn < 5)
+                        {
+                            beatIndex++;
+                        }
+                        else
+                        {
+                            beatIndex += 2;
+                        }
                     }
                 }
 
