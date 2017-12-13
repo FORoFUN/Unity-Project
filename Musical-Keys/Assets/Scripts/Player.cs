@@ -26,7 +26,7 @@ public class Player : MonoBehaviour {
 
     public bool dead;
 
-    private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user has not pressed the right key in the given time
+    //private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user has not pressed the right key in the given time
 
     private GameManager gm;
 
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour {
 
         dead = false;
 
-        keyPressed = 0;
+        //keyPressed = 0;
 
         StartCoroutine(ChangeSizeAndBrightness());
 

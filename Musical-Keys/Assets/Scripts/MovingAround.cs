@@ -9,6 +9,7 @@ public class MovingAround : MonoBehaviour
     public float xmax;
     public float ymin;
     public float ymax;
+    public float z;
     private Vector3 targetposition;
 
     private float movingTime;
@@ -18,7 +19,7 @@ public class MovingAround : MonoBehaviour
 
     private void Start()
     {
-        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
+        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax), z);
         distance = Vector3.Distance(targetposition, transform.position);
         movingTime = distance / speed;
         waiting = 2;
@@ -43,7 +44,7 @@ public class MovingAround : MonoBehaviour
     {
         waiting = 1;
         yield return new WaitForSeconds(movingTime);
-        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax));
+        targetposition = new Vector3(Random.Range(xmin, xmax), Random.Range(ymin, ymax), z);
         distance = Vector3.Distance(targetposition, transform.position);
         movingTime = distance / speed;
         waiting = 2;

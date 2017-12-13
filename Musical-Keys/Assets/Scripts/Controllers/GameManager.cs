@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public int roundMusic;
     public bool generatingObstacles = true;
 
-    private Vector3 spawnPoint;
+    public Vector3 spawnPoint;
 
     private AudioSource audio_source;
 
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
 
         audio_source.Play();
 
-        spawnPoint = new Vector3(0.0f, 0.0f, 0.0f);
+        spawnPoint = new Vector3(0.0f, 0.0f, 1.0f);
     }
 
     // Update is called once per frame
