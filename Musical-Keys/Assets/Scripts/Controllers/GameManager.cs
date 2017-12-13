@@ -155,6 +155,18 @@ public class GameManager : MonoBehaviour
         //Compare tag of the prefabs to the actual object in the scene to remove properly
         foreach (GameObject curPlayer in currentPlayers)
         {
+            if (curPlayer.GetComponent<Player>().changeKey)
+            {
+                int randomNumber = UnityEngine.Random.Range(0, playerKeys.Length - 1);
+                while (keyIndexes.Contains(randomNumber))
+                {
+                    randomNumber = UnityEngine.Random.Range(0, playerKeys.Length - 1);
+                }
+                keyIndexes[currentPlayers.IndexOf(curPlayer)] = randomNumber;
+                curPlayer.GetComponent<Player>().tm.text = playerKeys[keyIndexes[currentPlayers.IndexOf(curPlayer)]];
+                curPlayer.GetComponent<Player>().changeKey = false;
+            }
+
             if (curPlayer.GetComponent<Player>().dead)
             {
                 foreach (GameObject player in Players)
@@ -232,8 +244,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GoToEndGame()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         SceneManager.LoadScene("Round Transition");
+        audio_source.Stop();
         // set winner here?
         currentPlayers = new List<GameObject>();
         keyIndexes = new List<int>();

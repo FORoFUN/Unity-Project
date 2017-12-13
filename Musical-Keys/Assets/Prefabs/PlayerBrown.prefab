@@ -155,7 +155,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1230311028299062}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.4, z: -1}
+  m_LocalPosition: {x: 0, y: -0.4, z: 1}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children: []
   m_Father: {fileID: 4157783908322352}
@@ -218,7 +218,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: de7845165e2f25840a4d31e8c953a98b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -255,7 +255,7 @@ TextMesh:
   m_FontSize: 20
   m_FontStyle: 1
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: 8741d17dfdf6d0748860d6514ef15e22, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4290838272
@@ -349,6 +349,8 @@ MonoBehaviour:
   spriteObject: {fileID: 1822032585792384}
   bar: {fileID: 224863334336476984}
   canvas: {fileID: 224267192237203306}
+  startPressing: 0
+  changeKey: 0
   hp: 0
   dead: 0
 --- !u!114 &114731549348416394
@@ -470,7 +472,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 131412170
+  randomSeed: 437923347
   InitialModule:
     serializedVersion: 3
     enabled: 1

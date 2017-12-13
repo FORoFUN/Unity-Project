@@ -13,20 +13,19 @@ public class PickWinnerDisplayModel : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //get the instance of game manager
+        gm = GameManager.Instance;
 
-        // Find winner from game
-        for(int i = 0; i < gm.currentPlayers.Count; i++)
-        {
-            if (gm.currentPlayers[i].GetComponent<Player>().dead == false)
-            {
-                winner = gm.currentPlayers[i];
-            }
-        }
-        // Deactivate the losers
-        // (Automatic)
+        winner = gm.Players[0];
+        //Set where the object display(spawn)
+        GameObject clone = Instantiate(winner, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 
-        // Display the winner
-        winner.GetComponent<Player>().spriteObject.SetActive(true);
+        //Just deactivate extra stuff
+        clone.GetComponent<Player>().tm.gameObject.SetActive(false);
+        clone.GetComponent<Player>().canvas.gameObject.SetActive(false);
+        clone.GetComponent<Player>().spriteObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        clone.GetComponent<Player>().enabled = false;
+        clone.GetComponent<MovingAround>().enabled = false;
     }
 
 }

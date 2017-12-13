@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     public bool startPressing;
     private bool changeSize;
     private bool startMissTimer;
+    public bool changeKey;
     private bool pressedRightKey;
 
     private Vector3 originalSize;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour {
         changeSize = false;
         startMissTimer = false;
         pressedRightKey = false;
+        changeKey = false;
 
         originalSize = spriteObject.transform.localScale;
         hp = 3;
@@ -114,6 +116,7 @@ public class Player : MonoBehaviour {
 
                     startPressing = false;
                     pressedRightKey = true;
+                    changeKey = true;
                 }
             }
         }
