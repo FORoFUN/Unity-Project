@@ -17,9 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Round Transition.unity
     guid: 2b59485c9f96a1b45befc99521303f7d
+<<<<<<< HEAD
   - enabled: 1
     path: Assets/Scenes/Game Over.unity
     guid: a3f1a8c80fb6b7840b1434b3e8642e9f
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+=======
+>>>>>>> a0037a84c421161181b6e49db42c87d40cfa6abd

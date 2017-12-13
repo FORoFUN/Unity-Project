@@ -28,7 +28,7 @@ public class Player : MonoBehaviour {
 
     //private int keyPressed; // 0 = user has not pressed key, 1 = user pressed the right key, 2 = user has not pressed the right key in the given time
 
-    private GameManager gm;
+    //private GameManager gm;
 
     // Use this for initialization
     void Start () {
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour {
 
         StartCoroutine(ChangeSizeAndBrightness());
 
-        gm = GameManager.Instance;
+        //gm = GameManager.Instance;
     }
 
     // Update is called once per frame
