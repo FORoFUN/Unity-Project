@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
 
     // winner GameObject
-    public GameObject winner = null;
+    //public GameObject winner = null;
 
     public int maxSpawn = 25;
     public int currentNumSpawn = 0;
