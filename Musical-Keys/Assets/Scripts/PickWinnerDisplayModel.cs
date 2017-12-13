@@ -26,6 +26,7 @@ public class PickWinnerDisplayModel : MonoBehaviour
         clone.GetComponent<Player>().spriteObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         clone.GetComponent<Player>().enabled = false;
         clone.GetComponent<MovingAround>().enabled = false;
+
     }
 
 }
