@@ -21,6 +21,7 @@ public class PickWinnerDisplayModel : MonoBehaviour
         GameObject clone = Instantiate(winner, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
 
         //Just deactivate extra stuff
+        clone.transform.localScale = new Vector3(100.0f, 100.0f, 0.0f);
         clone.GetComponent<Player>().tm.gameObject.SetActive(false);
         clone.GetComponent<Player>().canvas.gameObject.SetActive(false);
         clone.GetComponent<Player>().spriteObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
